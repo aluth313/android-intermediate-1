@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Story App</string>
+    <string name="format_email_tidak_valid">Format Email tidak valid</string>
+    <string name="masukkan_email_anda">Masukkan Email Anda</string>
+    <string name="masukan_password_anda">Masukan password Anda</string>
+    <string name="password_kurang_dari_8_karakter">Password kurang dari 8 karakter</string>
 </resources>
