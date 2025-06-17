@@ -4,4 +4,7 @@
     <string name="masukkan_email_anda">Masukkan Email Anda</string>
     <string name="masukan_password_anda">Masukan password Anda</string>
     <string name="password_kurang_dari_8_karakter">Password kurang dari 8 karakter</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
 </resources>
