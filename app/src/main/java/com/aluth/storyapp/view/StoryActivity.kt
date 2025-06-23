@@ -1,22 +1,21 @@
 package com.aluth.storyapp.view
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aluth.storyapp.R
-import com.aluth.storyapp.databinding.ActivityLoginBinding
+import com.aluth.storyapp.databinding.ActivityStoryBinding
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class StoryActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityStoryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityStoryBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -24,10 +23,11 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        setSupportActionBar(binding.topAppBar)
+        supportActionBar?.title = getString(R.string.story)
+        binding.topAppBar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
 
-        binding.tvSignup.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
+        val layoutManager = LinearLayoutManager(this)
+        binding.rvStory.layoutManager = layoutManager
     }
 }

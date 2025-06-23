@@ -5,19 +5,28 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginActivity">
+    tools:context=".view.RegisterActivity">
 
-    <ImageView
-        android:id="@+id/iv_logo"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/green"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.aluth.storyapp.view.customview.MyEditText
+        android:id="@+id/et_name"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/login"
+        android:layout_height="wrap_content"
+        android:inputType="text"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginTop="24dp"
+        app:customHint="@string/masukkan_nama"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/topAppBar"/>
 
     <com.aluth.storyapp.view.customview.MyEditText
         android:id="@+id/et_email"
@@ -27,8 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/iv_logo"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/et_name"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <com.aluth.storyapp.view.customview.MyEditText
@@ -50,36 +59,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginTop="30dp"
-        android:text="@string/login"
+        android:text="@string/register"
         app:layout_constraintTop_toBottomOf="@+id/et_password"
         app:layout_constraintStart_toStartOf="parent"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login">
-
-        <TextView
-            android:id="@+id/tv_dont_have_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/don_t_have_an_account_sign_up"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"/>
-
-        <TextView
-            android:id="@+id/tv_signup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_up"
-            android:textSize="15sp"
-            android:layout_marginStart="5dp"
-            android:textColor="@color/blue"/>
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
