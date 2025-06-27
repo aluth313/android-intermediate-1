@@ -4,17 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.aluth.storyapp.R
-import com.aluth.storyapp.databinding.ActivityLoginBinding
+import com.aluth.storyapp.databinding.ActivityAddStoryBinding
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class AddStoryActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAddStoryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityAddStoryBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -22,16 +23,21 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        setSupportActionBar(binding.topAppBar)
+        supportActionBar?.title = getString(R.string.new_story)
+        binding.topAppBar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.topAppBar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.white))
 
-        binding.btnLogin.setOnClickListener {
+        binding.buttonAdd.setOnClickListener {
             val intent = Intent(this, StoryActivity::class.java)
             startActivity(intent)
             finish()
         }
+    }
 
-        binding.tvSignup.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }

@@ -1,5 +1,6 @@
 package com.aluth.storyapp.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,12 @@ class RegisterActivity : AppCompatActivity() {
         binding.topAppBar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.topAppBar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.white))
+
+        binding.btnRegister.setOnClickListener {
+            val intent = Intent(this, StoryActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

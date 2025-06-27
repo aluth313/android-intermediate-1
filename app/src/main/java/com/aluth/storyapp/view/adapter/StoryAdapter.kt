@@ -22,10 +22,10 @@ class StoryAdapter : ListAdapter<Story, StoryAdapter.MyViewHolder>(DIFF_CALLBACK
 
     class MyViewHolder(val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(story: Story){
-            binding.tvTitle.text = story.name
+            binding.tvItemName.text = story.name
             Glide.with(itemView.context)
                 .load(story.photoUrl)
-                .into(binding.ivImage)
+                .into(binding.ivItemPhoto)
         }
     }
 
