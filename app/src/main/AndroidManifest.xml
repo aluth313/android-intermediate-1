@@ -15,19 +15,19 @@
         android:theme="@style/Theme.StoryApp"
         tools:targetApi="31">
         <activity
-            android:name=".view.DetailStoryActivity"
+            android:name=".ui.story.DetailStoryActivity"
             android:exported="false" />
         <activity
-            android:name=".view.AddStoryActivity"
+            android:name=".ui.story.AddStoryActivity"
             android:exported="false" />
         <activity
-            android:name=".view.StoryActivity"
+            android:name=".ui.story.StoryActivity"
             android:exported="false" />
         <activity
-            android:name=".view.RegisterActivity"
+            android:name=".ui.auth.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

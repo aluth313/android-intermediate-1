@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.RegisterActivity">
+    tools:context=".ui.auth.RegisterActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.aluth.storyapp.view.customview.MyEditText
+    <com.aluth.storyapp.ui.customview.MyEditText
         android:id="@+id/ed_register_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topAppBar"/>
 
-    <com.aluth.storyapp.view.customview.MyEditText
+    <com.aluth.storyapp.ui.customview.MyEditText
         android:id="@+id/ed_register_email"
         app:inputMode="email"
         app:showPasswordToggle="true"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ed_register_name"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <com.aluth.storyapp.view.customview.MyEditText
+    <com.aluth.storyapp.ui.customview.MyEditText
         android:id="@+id/ed_register_password"
         app:inputMode="password"
         app:showPasswordToggle="true"
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ed_register_email"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <com.aluth.storyapp.view.customview.MyButton
+    <com.aluth.storyapp.ui.customview.MyButton
         android:id="@+id/btn_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

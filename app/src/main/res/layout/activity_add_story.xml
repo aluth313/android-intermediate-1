@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.AddStoryActivity">
+    tools:context=".ui.story.AddStoryActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/foto"/>
 
-    <com.aluth.storyapp.view.customview.MyButton
+    <com.aluth.storyapp.ui.customview.MyButton
         android:id="@+id/btn_camera"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintTop_toBottomOf="@id/iv_photo"/>
 
-    <com.aluth.storyapp.view.customview.MyButton
+    <com.aluth.storyapp.ui.customview.MyButton
         android:id="@+id/btn_galery"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         app:layout_constraintStart_toEndOf="@+id/btn_camera"
         app:layout_constraintTop_toBottomOf="@id/iv_photo"/>
 
-    <com.aluth.storyapp.view.customview.MyEditText
+    <com.aluth.storyapp.ui.customview.MyEditText
         android:id="@+id/ed_add_description"
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -71,7 +71,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_camera"/>
 
-    <com.aluth.storyapp.view.customview.MyButton
+    <com.aluth.storyapp.ui.customview.MyButton
         android:id="@+id/button_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

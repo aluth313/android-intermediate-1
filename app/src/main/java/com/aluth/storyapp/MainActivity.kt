@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.aluth.storyapp.model.data.LoginResult
-import com.aluth.storyapp.view.LoginActivity
-import com.aluth.storyapp.view.StoryActivity
-import com.aluth.storyapp.view.ViewModelFactory
-import com.aluth.storyapp.viewmodel.PreferencesViewModel
+import com.aluth.storyapp.data.local.datastore.SessionPreferences
+import com.aluth.storyapp.data.local.datastore.dataStore
+import com.aluth.storyapp.data.model.response.LoginResult
+import com.aluth.storyapp.ui.auth.LoginActivity
+import com.aluth.storyapp.ui.story.StoryActivity
+import com.aluth.storyapp.ui.factory.ViewModelFactory
+import com.aluth.storyapp.ui.core.PreferencesViewModel
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
