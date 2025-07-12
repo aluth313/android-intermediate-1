@@ -62,7 +62,7 @@ class RegisterActivity : AppCompatActivity() {
                             result.data.message,
                             Toast.LENGTH_SHORT,
                         ).show()
-                        val intent = Intent(this, StoryActivity::class.java)
+                        val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
                     }

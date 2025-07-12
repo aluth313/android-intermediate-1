@@ -10,10 +10,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.aluth.storyapp.R
+import com.aluth.storyapp.SessionPreferences
+import com.aluth.storyapp.dataStore
 import com.aluth.storyapp.databinding.ActivityLoginBinding
 import com.aluth.storyapp.model.data.LoginRequest
 import com.aluth.storyapp.model.data.Result
 import com.aluth.storyapp.viewmodel.AuthViewModel
+import com.aluth.storyapp.viewmodel.PreferencesViewModel
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -28,8 +31,10 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val factory = ViewModelFactory.getInstance(application)
+        val pref = SessionPreferences.getInstance(application.dataStore)
+        val factory = ViewModelFactory.getInstance(application, pref)
         val authViewModel = ViewModelProvider(this, factory!!)[AuthViewModel::class.java]
+        val preferencesViewModel = ViewModelProvider(this, factory)[PreferencesViewModel::class.java]
 
         binding.btnLogin.setOnClickListener {
             authViewModel.login(
@@ -49,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     is Result.Success -> {
+                        preferencesViewModel.saveUserSession(result.data)
                         binding.pbLoading.visibility = View.GONE
                         Toast.makeText(
                             this,
@@ -67,5 +73,10 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
     }
 }

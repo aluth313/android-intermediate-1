@@ -9,9 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aluth.storyapp.R
+import com.aluth.storyapp.SessionPreferences
+import com.aluth.storyapp.dataStore
 import com.aluth.storyapp.databinding.ActivityStoryBinding
+import com.aluth.storyapp.viewmodel.PreferencesViewModel
 
 class StoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryBinding
@@ -47,6 +51,10 @@ class StoryActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_logout -> {
+                val pref = SessionPreferences.getInstance(application.dataStore)
+                val factory = ViewModelFactory.getInstance(application, pref)
+                val preferencesViewModel = ViewModelProvider(this, factory!!)[PreferencesViewModel::class.java]
+                preferencesViewModel.clearUserSession()
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
