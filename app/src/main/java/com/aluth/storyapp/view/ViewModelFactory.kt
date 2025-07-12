@@ -8,6 +8,7 @@ import com.aluth.storyapp.SessionPreferences
 import com.aluth.storyapp.repository.StoryRepository
 import com.aluth.storyapp.viewmodel.AuthViewModel
 import com.aluth.storyapp.viewmodel.PreferencesViewModel
+import com.aluth.storyapp.viewmodel.StoryViewModel
 
 class ViewModelFactory private constructor(
     private val storyRepository: StoryRepository,
@@ -39,6 +40,9 @@ class ViewModelFactory private constructor(
         when {
             modelClass.isAssignableFrom(AuthViewModel::class.java) -> {
                 return AuthViewModel(storyRepository) as T
+            }
+            modelClass.isAssignableFrom(StoryViewModel::class.java) -> {
+                return StoryViewModel(storyRepository) as T
             }
             modelClass.isAssignableFrom(PreferencesViewModel::class.java) -> {
                 if (sessionPreferences == null) {

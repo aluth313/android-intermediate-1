@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/iv_item_photo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:contentDescription="@string/item_photo"
         tools:src="@drawable/dummy_image"
         android:scaleType="fitXY"

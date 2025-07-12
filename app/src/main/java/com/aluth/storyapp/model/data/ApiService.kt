@@ -1,6 +1,8 @@
 package com.aluth.storyapp.model.data
 
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ApiService {
@@ -14,4 +16,9 @@ interface ApiService {
     suspend fun register(
         @Body request: RegisterRequest
     ): RegisterResponse
+
+    @GET("stories")
+    suspend fun stories(
+        @Header("Authorization") token: String,
+    ): StoryListResponse
 }

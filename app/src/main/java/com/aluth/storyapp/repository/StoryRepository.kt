@@ -9,25 +9,13 @@ import com.aluth.storyapp.model.data.LoginResult
 import com.aluth.storyapp.model.data.RegisterRequest
 import com.aluth.storyapp.model.data.RegisterResponse
 import com.aluth.storyapp.model.data.Result
+import com.aluth.storyapp.model.data.Story
 import org.json.JSONObject
 import retrofit2.HttpException
 
 class StoryRepository private constructor (
     private val apiService: ApiService,
 ){
-    companion object {
-        private const val TAG = "StoryRepository"
-
-        @Volatile
-        private var instance: StoryRepository? = null
-        fun getInstance(
-            apiService: ApiService,
-        ): StoryRepository =
-            instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService)
-            }.also { instance = it }
-    }
-
     fun login(loginRequest: LoginRequest): LiveData<Result<LoginResult>> = liveData {
         emit(Result.Loading)
         try {
@@ -49,9 +37,6 @@ class StoryRepository private constructor (
         emit(Result.Loading)
         try {
             val response = apiService.register(registerRequest)
-            if (response.error){
-                emit(Result.Error(response.message))
-            }
             emit(Result.Success(response))
         } catch (e: Exception) {
             if (e is HttpException) {
@@ -60,6 +45,23 @@ class StoryRepository private constructor (
                 emit(Result.Error(errorMessage))
             } else {
                 Log.e(TAG, "register: ${e.message.toString()}")
+                emit(Result.Error(e.message.toString()))
+            }
+        }
+    }
+
+    fun getStories(token: String): LiveData<Result<List<Story>>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.stories("Bearer $token")
+            emit(Result.Success(response.listStory))
+        } catch (e: Exception) {
+            if (e is HttpException) {
+                val errorMessage = errMsg(e)
+                Log.e(TAG, "getStories: $errorMessage")
+                emit(Result.Error(errorMessage))
+            } else {
+                Log.e(TAG, "getStories: ${e.message.toString()}")
                 emit(Result.Error(e.message.toString()))
             }
         }
@@ -74,5 +76,18 @@ class StoryRepository private constructor (
             "Terjadi kesalahan"
         }
         return errorMessage
+    }
+
+    companion object {
+        private const val TAG = "StoryRepository"
+
+        @Volatile
+        private var instance: StoryRepository? = null
+        fun getInstance(
+            apiService: ApiService,
+        ): StoryRepository =
+            instance ?: synchronized(this) {
+                instance ?: StoryRepository(apiService)
+            }.also { instance = it }
     }
 }
