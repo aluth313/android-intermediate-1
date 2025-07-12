@@ -19,4 +19,5 @@
     <string name="logout">Logout</string>
     <string name="new_story">New Story</string>
     <string name="item_photo">Item Photo</string>
+    <string name="image_login">image login</string>
 </resources>

@@ -11,6 +11,7 @@
         android:id="@+id/iv_logo"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:contentDescription="@string/image_login"
         android:src="@drawable/login"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
@@ -83,5 +84,15 @@
             android:layout_marginStart="5dp"
             android:textColor="@color/blue"/>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

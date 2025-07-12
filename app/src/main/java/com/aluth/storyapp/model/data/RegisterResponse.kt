@@ -1,11 +1,8 @@
-package com.aluth.storyapp.model
+package com.aluth.storyapp.model.data
 
 import com.google.gson.annotations.SerializedName
 
-data class StoryListResponse(
-
-	@field:SerializedName("listStory")
-	val listStory: List<Story>,
+data class RegisterResponse(
 
 	@field:SerializedName("error")
 	val error: Boolean,

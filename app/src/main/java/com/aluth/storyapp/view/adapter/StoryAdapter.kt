@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aluth.storyapp.databinding.ItemStoryBinding
-import com.aluth.storyapp.model.Story
+import com.aluth.storyapp.model.data.Story
 import com.bumptech.glide.Glide
 
 class StoryAdapter : ListAdapter<Story, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {

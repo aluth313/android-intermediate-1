@@ -1,4 +1,4 @@
-package com.aluth.storyapp.model
+package com.aluth.storyapp.model.data
 
 import com.google.gson.annotations.SerializedName
 
