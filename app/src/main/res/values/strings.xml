@@ -22,4 +22,5 @@
     <string name="image_login">image login</string>
     <string name="berhasil_login">Berhasil Login</string>
     <string name="data_kosong">Data Kosong</string>
+    <string name="detail_story">Detail Story</string>
 </resources>

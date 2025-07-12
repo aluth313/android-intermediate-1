@@ -15,6 +15,9 @@
         android:theme="@style/Theme.StoryApp"
         tools:targetApi="31">
         <activity
+            android:name=".view.DetailStoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.AddStoryActivity"
             android:exported="false" />
         <activity
