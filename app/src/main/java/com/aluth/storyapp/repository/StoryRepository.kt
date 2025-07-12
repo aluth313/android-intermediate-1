@@ -15,14 +15,33 @@ import retrofit2.HttpException
 class StoryRepository private constructor (
     private val apiService: ApiService,
 ){
+    companion object {
+        private const val TAG = "StoryRepository"
+
+        @Volatile
+        private var instance: StoryRepository? = null
+        fun getInstance(
+            apiService: ApiService,
+        ): StoryRepository =
+            instance ?: synchronized(this) {
+                instance ?: StoryRepository(apiService)
+            }.also { instance = it }
+    }
+
     fun login(loginRequest: LoginRequest): LiveData<Result<LoginResult>> = liveData {
         emit(Result.Loading)
         try {
             val response = apiService.login(loginRequest)
             emit(Result.Success(response.loginResult!!))
         } catch (e: Exception) {
-            Log.e(TAG, "login: ${e.message.toString()}")
-            emit(Result.Error(e.message.toString()))
+            if (e is HttpException) {
+                val errorMessage = errMsg(e)
+                Log.e(TAG, "login: $errorMessage")
+                emit(Result.Error(errorMessage))
+            } else {
+                Log.e(TAG, "login: ${e.message.toString()}")
+                emit(Result.Error(e.message.toString()))
+            }
         }
     }
 
@@ -36,16 +55,9 @@ class StoryRepository private constructor (
             emit(Result.Success(response))
         } catch (e: Exception) {
             if (e is HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                val errorMessage = try {
-                    val jsonObject = JSONObject(errorBody ?: "")
-                    jsonObject.getString("message")
-                } catch (jsonEx: Exception) {
-                    "Terjadi kesalahan"
-                }
-                Log.e(TAG, "register msg: $errorMessage")
+                val errorMessage = errMsg(e)
+                Log.e(TAG, "register: $errorMessage")
                 emit(Result.Error(errorMessage))
-
             } else {
                 Log.e(TAG, "register: ${e.message.toString()}")
                 emit(Result.Error(e.message.toString()))
@@ -53,16 +65,14 @@ class StoryRepository private constructor (
         }
     }
 
-    companion object {
-        private const val TAG = "StoryRepository"
-
-        @Volatile
-        private var instance: StoryRepository? = null
-        fun getInstance(
-            apiService: ApiService,
-        ): StoryRepository =
-            instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService)
-            }.also { instance = it }
+    private fun errMsg(e: HttpException) : String {
+        val errorBody = e.response()?.errorBody()?.string()
+        val errorMessage = try {
+            val jsonObject = JSONObject(errorBody ?: "")
+            jsonObject.getString("message")
+        } catch (jsonEx: Exception) {
+            "Terjadi kesalahan"
+        }
+        return errorMessage
     }
 }
