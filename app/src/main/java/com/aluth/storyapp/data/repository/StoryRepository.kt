@@ -7,15 +7,20 @@ import com.aluth.storyapp.data.network.ApiService
 import com.aluth.storyapp.data.model.request.LoginRequest
 import com.aluth.storyapp.data.model.response.LoginResult
 import com.aluth.storyapp.data.model.request.RegisterRequest
-import com.aluth.storyapp.data.model.response.RegisterResponse
+import com.aluth.storyapp.data.model.response.BaseResponse
 import com.aluth.storyapp.utils.Result
 import com.aluth.storyapp.data.model.response.Story
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.HttpException
+import java.io.File
 
-class StoryRepository private constructor (
+class StoryRepository private constructor(
     private val apiService: ApiService,
-){
+) {
     fun login(loginRequest: LoginRequest): LiveData<Result<LoginResult>> = liveData {
         emit(Result.Loading)
         try {
@@ -33,7 +38,7 @@ class StoryRepository private constructor (
         }
     }
 
-    fun register(registerRequest: RegisterRequest): LiveData<Result<RegisterResponse>> = liveData {
+    fun register(registerRequest: RegisterRequest): LiveData<Result<BaseResponse>> = liveData {
         emit(Result.Loading)
         try {
             val response = apiService.register(registerRequest)
@@ -45,6 +50,34 @@ class StoryRepository private constructor (
                 emit(Result.Error(errorMessage))
             } else {
                 Log.e(TAG, "register: ${e.message.toString()}")
+                emit(Result.Error(e.message.toString()))
+            }
+        }
+    }
+
+    fun postStory(
+        token: String,
+        description: String,
+        imageFile: File
+    ): LiveData<Result<BaseResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val requestBody = description.toRequestBody("text/plain".toMediaType())
+            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+            val multipartBody = MultipartBody.Part.createFormData(
+                "photo",
+                imageFile.name,
+                requestImageFile
+            )
+            val response = apiService.postStory("Bearer $token", multipartBody, requestBody)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            if (e is HttpException) {
+                val errorMessage = errMsg(e)
+                Log.e(TAG, "postStory: $errorMessage")
+                emit(Result.Error(errorMessage))
+            } else {
+                Log.e(TAG, "postStory: ${e.message.toString()}")
                 emit(Result.Error(e.message.toString()))
             }
         }
@@ -67,7 +100,7 @@ class StoryRepository private constructor (
         }
     }
 
-    private fun errMsg(e: HttpException) : String {
+    private fun errMsg(e: HttpException): String {
         val errorBody = e.response()?.errorBody()?.string()
         val errorMessage = try {
             val jsonObject = JSONObject(errorBody ?: "")

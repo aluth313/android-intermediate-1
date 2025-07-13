@@ -2,7 +2,7 @@ package com.aluth.storyapp.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class RegisterResponse(
+data class BaseResponse(
 
 	@field:SerializedName("error")
 	val error: Boolean,

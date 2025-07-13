@@ -23,4 +23,12 @@
     <string name="berhasil_login">Berhasil Login</string>
     <string name="data_kosong">Data Kosong</string>
     <string name="detail_story">Detail Story</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="token_kosong">Token Kosong</string>
+    <string name="photo_berhasil_di_upload">Photo Berhasil di upload</string>
+    <string name="ambil_gambar">Ambil Gambar</string>
+    <string name="switch_kamera">Switch Kamera</string>
+    <string name="gagal_memunculkan_kamera">Gagal memunculkan kamera.</string>
+    <string name="gagal_mengambil_gambar">Gagal mengambil gambar.</string>
+    <string name="no_media_selected">No media selected</string>
 </resources>
