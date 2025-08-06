@@ -106,7 +106,7 @@ class StoryRepository private constructor(
             val jsonObject = JSONObject(errorBody ?: "")
             jsonObject.getString("message")
         } catch (jsonEx: Exception) {
-            "Terjadi kesalahan"
+            "Terjadi kesalahan: $jsonEx"
         }
         return errorMessage
     }

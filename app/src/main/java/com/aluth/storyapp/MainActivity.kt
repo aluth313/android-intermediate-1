@@ -18,17 +18,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val pref = SessionPreferences.getInstance(application.dataStore)
         val factory = ViewModelFactory.getInstance(application, pref)
-        val preferencesViewModel = ViewModelProvider(this, factory!!)[PreferencesViewModel::class.java]
+        val preferencesViewModel =
+            ViewModelProvider(this, factory!!)[PreferencesViewModel::class.java]
 
         preferencesViewModel.getUserSession().observe(this) { session ->
             val user = Gson().fromJson(session, LoginResult::class.java)
-            if (!user?.token.isNullOrEmpty()) {
-                startActivity(Intent(this, StoryActivity::class.java))
-                finish()
+            val destination = if (!user?.token.isNullOrEmpty()) {
+                StoryActivity::class.java
             } else {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
+                LoginActivity::class.java
             }
+            startActivity(Intent(this, destination))
+            finish()
         }
 
     }

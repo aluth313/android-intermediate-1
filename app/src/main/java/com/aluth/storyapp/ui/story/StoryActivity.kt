@@ -40,8 +40,8 @@ class StoryActivity : AppCompatActivity() {
         }
         val pref = SessionPreferences.getInstance(application.dataStore)
         val factory = ViewModelFactory.getInstance(application, pref)
-        val preferencesViewModel = ViewModelProvider(this, factory!!)[PreferencesViewModel::class.java]
-        val storyViewModel = ViewModelProvider(this, factory)[StoryViewModel::class.java]
+        val preferencesViewModel = factory?.let { ViewModelProvider(this, it)[PreferencesViewModel::class.java] }
+        val storyViewModel = factory?.let { ViewModelProvider(this, it)[StoryViewModel::class.java]}
 
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.title = getString(R.string.story)
@@ -55,10 +55,10 @@ class StoryActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.rvStory.layoutManager = layoutManager
 
-        preferencesViewModel.getUserSession().observe(this) { session ->
+        preferencesViewModel?.getUserSession()?.observe(this) { session ->
             val user = Gson().fromJson(session, LoginResult::class.java)
             if (!user?.token.isNullOrEmpty()) {
-                storyViewModel.getStories(user.token ?: "").observe(this) { result ->
+                storyViewModel?.getStories(user.token!!)?.observe(this) { result ->
                     when (result) {
                         is Result.Loading -> {
                             binding.pbLoading.visibility = View.VISIBLE

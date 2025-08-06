@@ -40,11 +40,13 @@ class AddStoryActivity : AppCompatActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
-            if (isGranted) {
-                Toast.makeText(this, "Permission request granted", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(this, "Permission request denied", Toast.LENGTH_LONG).show()
-            }
+            showToast(
+                if (isGranted) {
+                    "Permission request granted"
+                } else {
+                    "Permission request denied"
+                }
+            )
         }
 
     private fun allPermissionsGranted() =
@@ -135,7 +137,7 @@ class AddStoryActivity : AppCompatActivity() {
             val imageFile = uriToFile(this, uri).reduceFileImage()
             val desc = binding.edAddDescription.text.toString()
             showLoading(true)
-            if (token.isEmpty()){
+            if (token.isEmpty()) {
                 showToast(getString(R.string.token_kosong))
                 return
             }

@@ -20,11 +20,12 @@ import com.aluth.storyapp.ui.factory.ViewModelFactory
 import com.aluth.storyapp.ui.core.PreferencesViewModel
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+    private var _binding: ActivityLoginBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        _binding = ActivityLoginBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -35,7 +36,8 @@ class LoginActivity : AppCompatActivity() {
         val pref = SessionPreferences.getInstance(application.dataStore)
         val factory = ViewModelFactory.getInstance(application, pref)
         val authViewModel = ViewModelProvider(this, factory!!)[AuthViewModel::class.java]
-        val preferencesViewModel = ViewModelProvider(this, factory)[PreferencesViewModel::class.java]
+        val preferencesViewModel =
+            ViewModelProvider(this, factory)[PreferencesViewModel::class.java]
 
         binding.btnLogin.setOnClickListener {
             authViewModel.login(
@@ -76,8 +78,13 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     override fun onBackPressed() {
-        super.onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         finishAffinity()
     }
 }

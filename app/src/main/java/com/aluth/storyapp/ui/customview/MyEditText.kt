@@ -66,6 +66,7 @@ class MyEditText @JvmOverloads constructor(
                 InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             else
                 InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+
             else -> InputType.TYPE_CLASS_TEXT
         }
 
@@ -83,12 +84,12 @@ class MyEditText @JvmOverloads constructor(
     }
 
     private fun updatePasswordToggleIcon() {
-        val icon = if (isPasswordVisible)
-            ContextCompat.getDrawable(context, R.drawable.baseline_visibility_off_24)
-        else
-            ContextCompat.getDrawable(context, R.drawable.baseline_visibility_24)
-        println("apa nih")
-        println(isPasswordVisible)
+        val icon = ContextCompat.getDrawable(
+            context, if (isPasswordVisible)
+                R.drawable.baseline_visibility_off_24
+            else
+                R.drawable.baseline_visibility_24
+        )
         setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null)
     }
 
