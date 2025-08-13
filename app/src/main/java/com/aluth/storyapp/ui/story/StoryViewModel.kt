@@ -1,13 +1,21 @@
 package com.aluth.storyapp.ui.story
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.aluth.storyapp.data.model.response.Story
 import com.aluth.storyapp.data.repository.StoryRepository
 import java.io.File
 
 class StoryViewModel(
     private val storyRepository: StoryRepository,
 ) : ViewModel() {
-    fun getStories(token: String) = storyRepository.getStories(token)
+    fun getStories(token: String): LiveData<PagingData<Story>> =
+        storyRepository.getStories(token).cachedIn(viewModelScope)
+
+//    fun getStories(token: String) = storyRepository.getStories(token).cachedIn(viewModelScope)
 
     fun postStory(token: String, description: String, imageFile: File) =
         storyRepository.postStory(token, description, imageFile)

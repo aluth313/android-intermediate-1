@@ -3,6 +3,12 @@ package com.aluth.storyapp.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.aluth.storyapp.data.local.database.StoryDatabase
 import com.aluth.storyapp.data.network.ApiService
 import com.aluth.storyapp.data.model.request.LoginRequest
 import com.aluth.storyapp.data.model.response.LoginResult
@@ -19,6 +25,7 @@ import retrofit2.HttpException
 import java.io.File
 
 class StoryRepository private constructor(
+    private val database: StoryDatabase,
     private val apiService: ApiService,
 ) {
     fun login(loginRequest: LoginRequest): LiveData<Result<LoginResult>> = liveData {
@@ -83,21 +90,17 @@ class StoryRepository private constructor(
         }
     }
 
-    fun getStories(token: String): LiveData<Result<List<Story>>> = liveData {
-        emit(Result.Loading)
-        try {
-            val response = apiService.stories("Bearer $token")
-            emit(Result.Success(response.listStory))
-        } catch (e: Exception) {
-            if (e is HttpException) {
-                val errorMessage = errMsg(e)
-                Log.e(TAG, "getStories: $errorMessage")
-                emit(Result.Error(errorMessage))
-            } else {
-                Log.e(TAG, "getStories: ${e.message.toString()}")
-                emit(Result.Error(e.message.toString()))
+    fun getStories(token: String): LiveData<PagingData<Story>> {
+        @OptIn(ExperimentalPagingApi::class)
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            remoteMediator = StoryRemoteMediator(database, apiService, token),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService, token)
             }
-        }
+        ).liveData
     }
 
     private fun errMsg(e: HttpException): String {
@@ -117,10 +120,11 @@ class StoryRepository private constructor(
         @Volatile
         private var instance: StoryRepository? = null
         fun getInstance(
+            database: StoryDatabase,
             apiService: ApiService,
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService)
+                instance ?: StoryRepository(database, apiService)
             }.also { instance = it }
     }
 }

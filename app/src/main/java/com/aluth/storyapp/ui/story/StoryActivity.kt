@@ -2,6 +2,7 @@ package com.aluth.storyapp.ui.story
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aluth.storyapp.R
 import com.aluth.storyapp.data.local.datastore.SessionPreferences
@@ -54,28 +57,50 @@ class StoryActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvStory.layoutManager = layoutManager
+        val adapter = StoryAdapter()
+        binding.rvStory.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
 
         preferencesViewModel?.getUserSession()?.observe(this) { session ->
             val user = Gson().fromJson(session, LoginResult::class.java)
             if (!user?.token.isNullOrEmpty()) {
-                storyViewModel?.getStories(user.token!!)?.observe(this) { result ->
-                    when (result) {
-                        is Result.Loading -> {
-                            binding.pbLoading.visibility = View.VISIBLE
-                        }
+                storyViewModel?.getStories(user.token!!)?.observe(this) { pagingData ->
+                    adapter.submitData(lifecycle, pagingData)
 
-                        is Result.Error -> {
-                            binding.pbLoading.visibility = View.GONE
-                            Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
-                        }
-
-                        is Result.Success -> {
-                            setEventData(result.data)
-                        }
-                    }
+//                    result ->
+//                    when (result) {
+//                        is Result.Loading -> {
+//                            binding.pbLoading.visibility = View.VISIBLE
+//                        }
+//
+//                        is Result.Error -> {
+//                            binding.pbLoading.visibility = View.GONE
+//                            Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+//                        }
+//
+//                        is Result.Success -> {
+//                            setEventData(result.data)
+//                        }
+//                    }
                 }
             }
         }
+
+//        adapter.addLoadStateListener { loadState ->
+//            binding.pbLoading.isVisible = loadState.source.refresh is LoadState.Loading
+//
+//            val errorState = loadState.source.refresh as? LoadState.Error
+//                ?: loadState.append as? LoadState.Error
+//                ?: loadState.prepend as? LoadState.Error
+//
+//            errorState?.let {
+//                Log.e("Error Paging", "Error Paging: ${it.error}")
+//                Toast.makeText(this, "Error: ${it.error}", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -104,13 +129,13 @@ class StoryActivity : AppCompatActivity() {
         finishAffinity()
     }
 
-    private fun setEventData(stories: List<Story>) {
-        binding.pbLoading.visibility = View.GONE
-        val adapter = StoryAdapter()
-        adapter.submitList(stories)
-        binding.rvStory.adapter = adapter
-        if(stories.isEmpty()){
-            binding.tvEmpty.visibility = View.VISIBLE
-        }
-    }
+//    private fun setEventData(stories: List<Story>) {
+//        binding.pbLoading.visibility = View.GONE
+//        val adapter = StoryAdapter()
+//        adapter.submitList(stories)
+//        binding.rvStory.adapter = adapter
+//        if(stories.isEmpty()){
+//            binding.tvEmpty.visibility = View.VISIBLE
+//        }
+//    }
 }

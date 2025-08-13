@@ -27,7 +27,7 @@ class ViewModelFactory private constructor(
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: application?.let {
                     ViewModelFactory(
-                        Injection.storyRepository(),
+                        Injection.storyRepository(application),
                         sessionPreferences,
                     ).also { INSTANCE = it }
                 }
