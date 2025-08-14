@@ -3,19 +3,21 @@ package com.aluth.storyapp.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.filter
 import androidx.paging.liveData
 import com.aluth.storyapp.data.local.database.StoryDatabase
-import com.aluth.storyapp.data.network.ApiService
 import com.aluth.storyapp.data.model.request.LoginRequest
-import com.aluth.storyapp.data.model.response.LoginResult
 import com.aluth.storyapp.data.model.request.RegisterRequest
 import com.aluth.storyapp.data.model.response.BaseResponse
-import com.aluth.storyapp.utils.Result
+import com.aluth.storyapp.data.model.response.LoginResult
 import com.aluth.storyapp.data.model.response.Story
+import com.aluth.storyapp.data.network.ApiService
+import com.aluth.storyapp.utils.Result
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -28,6 +30,8 @@ class StoryRepository private constructor(
     private val database: StoryDatabase,
     private val apiService: ApiService,
 ) {
+    private val seenIds = mutableSetOf<String>()
+
     fun login(loginRequest: LoginRequest): LiveData<Result<LoginResult>> = liveData {
         emit(Result.Loading)
         try {
@@ -91,6 +95,8 @@ class StoryRepository private constructor(
     }
 
     fun getStories(token: String): LiveData<PagingData<Story>> {
+        seenIds.clear()
+
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
@@ -100,7 +106,16 @@ class StoryRepository private constructor(
             pagingSourceFactory = {
                 StoryPagingSource(apiService, token)
             }
-        ).liveData
+        ).liveData.map { pagingData ->
+            pagingData.filter { story ->
+                if (seenIds.contains(story.id)){
+                    false
+                } else {
+                    seenIds.add(story.id)
+                    true
+                }
+            }
+        }
     }
 
     private fun errMsg(e: HttpException): String {

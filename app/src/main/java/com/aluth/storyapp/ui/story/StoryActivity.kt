@@ -2,30 +2,23 @@ package com.aluth.storyapp.ui.story
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aluth.storyapp.R
 import com.aluth.storyapp.data.local.datastore.SessionPreferences
 import com.aluth.storyapp.data.local.datastore.dataStore
-import com.aluth.storyapp.databinding.ActivityStoryBinding
 import com.aluth.storyapp.data.model.response.LoginResult
-import com.aluth.storyapp.utils.Result
-import com.aluth.storyapp.data.model.response.Story
+import com.aluth.storyapp.databinding.ActivityStoryBinding
 import com.aluth.storyapp.ui.auth.LoginActivity
-import com.aluth.storyapp.ui.factory.ViewModelFactory
 import com.aluth.storyapp.ui.core.PreferencesViewModel
+import com.aluth.storyapp.ui.factory.ViewModelFactory
 import com.google.gson.Gson
 
 class StoryActivity : AppCompatActivity() {
@@ -69,38 +62,9 @@ class StoryActivity : AppCompatActivity() {
             if (!user?.token.isNullOrEmpty()) {
                 storyViewModel?.getStories(user.token!!)?.observe(this) { pagingData ->
                     adapter.submitData(lifecycle, pagingData)
-
-//                    result ->
-//                    when (result) {
-//                        is Result.Loading -> {
-//                            binding.pbLoading.visibility = View.VISIBLE
-//                        }
-//
-//                        is Result.Error -> {
-//                            binding.pbLoading.visibility = View.GONE
-//                            Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
-//                        }
-//
-//                        is Result.Success -> {
-//                            setEventData(result.data)
-//                        }
-//                    }
                 }
             }
         }
-
-//        adapter.addLoadStateListener { loadState ->
-//            binding.pbLoading.isVisible = loadState.source.refresh is LoadState.Loading
-//
-//            val errorState = loadState.source.refresh as? LoadState.Error
-//                ?: loadState.append as? LoadState.Error
-//                ?: loadState.prepend as? LoadState.Error
-//
-//            errorState?.let {
-//                Log.e("Error Paging", "Error Paging: ${it.error}")
-//                Toast.makeText(this, "Error: ${it.error}", Toast.LENGTH_SHORT).show()
-//            }
-//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -128,14 +92,4 @@ class StoryActivity : AppCompatActivity() {
         super.onBackPressed()
         finishAffinity()
     }
-
-//    private fun setEventData(stories: List<Story>) {
-//        binding.pbLoading.visibility = View.GONE
-//        val adapter = StoryAdapter()
-//        adapter.submitList(stories)
-//        binding.rvStory.adapter = adapter
-//        if(stories.isEmpty()){
-//            binding.tvEmpty.visibility = View.VISIBLE
-//        }
-//    }
 }
