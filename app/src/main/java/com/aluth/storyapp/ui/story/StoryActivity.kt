@@ -4,12 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aluth.storyapp.R
 import com.aluth.storyapp.data.local.datastore.SessionPreferences
@@ -20,6 +24,8 @@ import com.aluth.storyapp.ui.auth.LoginActivity
 import com.aluth.storyapp.ui.core.PreferencesViewModel
 import com.aluth.storyapp.ui.factory.ViewModelFactory
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class StoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryBinding
@@ -62,6 +68,17 @@ class StoryActivity : AppCompatActivity() {
             if (!user?.token.isNullOrEmpty()) {
                 storyViewModel?.getStories(user.token!!)?.observe(this) { pagingData ->
                     adapter.submitData(lifecycle, pagingData)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collectLatest { loadStates ->
+                binding.pbLoading.isVisible = loadStates.refresh is LoadState.Loading
+
+                val errorState = loadStates.refresh as? LoadState.Error
+                errorState?.let {
+                    Toast.makeText(this@StoryActivity, it.error.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
             }
         }
