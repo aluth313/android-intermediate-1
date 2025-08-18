@@ -11,6 +11,7 @@ import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 private const val MAXIMAL_SIZE = 1000000
 private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
@@ -52,4 +53,18 @@ fun File.reduceFileImage(): File {
     bitmap?.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
 
     return file
+}
+
+fun formatTimeNow(format: String): String {
+    val sdf = SimpleDateFormat(format, Locale.getDefault())
+    val now = sdf.format(Date())
+
+    return now
+}
+
+fun generateStoryId(): String {
+    val uuid = UUID.randomUUID().toString().replace("-", "")
+    val randomPart = uuid.take(16)
+
+    return "story-$randomPart"
 }
