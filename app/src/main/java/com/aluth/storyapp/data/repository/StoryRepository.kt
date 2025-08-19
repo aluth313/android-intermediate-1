@@ -94,6 +94,25 @@ class StoryRepository private constructor(
         }
     }
 
+    fun getStoriesWithLocation(
+        token: String,
+    ): LiveData<Result<List<Story>>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.storiesWithLocation("Bearer $token")
+            emit(Result.Success(response.listStory))
+        } catch (e: Exception) {
+            if (e is HttpException) {
+                val errorMessage = errMsg(e)
+                Log.e(TAG, "getStories: $errorMessage")
+                emit(Result.Error(errorMessage))
+            } else {
+                Log.e(TAG, "getStories: ${e.message.toString()}")
+                emit(Result.Error(e.message.toString()))
+            }
+        }
+    }
+
     fun getStories(token: String): LiveData<PagingData<Story>> {
         seenIds.clear()
 

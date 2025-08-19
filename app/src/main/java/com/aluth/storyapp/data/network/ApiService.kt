@@ -1,10 +1,9 @@
 package com.aluth.storyapp.data.network
 
 import com.aluth.storyapp.data.model.request.LoginRequest
-import com.aluth.storyapp.data.model.response.LoginResponse
 import com.aluth.storyapp.data.model.request.RegisterRequest
 import com.aluth.storyapp.data.model.response.BaseResponse
-import com.aluth.storyapp.data.model.response.Story
+import com.aluth.storyapp.data.model.response.LoginResponse
 import com.aluth.storyapp.data.model.response.StoryListResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -33,6 +32,12 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Query("page") page: Int,
         @Query("size") size: Int,
+    ): StoryListResponse
+
+    @GET("stories")
+    suspend fun storiesWithLocation(
+        @Header("Authorization") token: String,
+        @Query("location") location: Int = 1,
     ): StoryListResponse
 
     @Multipart

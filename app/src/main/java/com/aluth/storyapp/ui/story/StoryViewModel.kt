@@ -15,7 +15,7 @@ class StoryViewModel(
     fun getStories(token: String): LiveData<PagingData<Story>> =
         storyRepository.getStories(token).cachedIn(viewModelScope)
 
-//    fun getStories(token: String) = storyRepository.getStories(token).cachedIn(viewModelScope)
+    fun getStoriesWithLocation(token: String) = storyRepository.getStoriesWithLocation(token)
 
     fun postStory(token: String, description: String, imageFile: File) =
         storyRepository.postStory(token, description, imageFile)

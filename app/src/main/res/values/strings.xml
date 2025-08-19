@@ -32,4 +32,9 @@
     <string name="gagal_mengambil_gambar">Gagal mengambil gambar.</string>
     <string name="no_media_selected">No media selected</string>
     <string name="retry">Coba Lagi</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="maps">Maps</string>
+    <string name="memuat_beberapa_lokasi">Memuat Beberapa Lokasi</string>
+    <string name="gagal_memuat_lokasi">Gagal Memuat Lokasi</string>
+    <string name="berhasil_memuat_lokasi">Berhasil Memuat Lokasi</string>
 </resources>
